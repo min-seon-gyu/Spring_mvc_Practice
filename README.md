@@ -84,5 +84,40 @@ th:value="${item.id}"
 
 @ModelAttribute 자체도 생략가능하다. 대상 객체는 모델에 자동 등록된다. 나머지 사항은 기존과동일하다
 
+```java
+    //@PostMapping("/add")
+    public String addItemV2(@ModelAttribute("item") Item item){
+        itemRepository.save(item);
+        return "basic/item";
+    }
+
+    //@PostMapping("/add")
+    public String addItemV3(@ModelAttribute Item item){
+        itemRepository.save(item);
+        return "basic/item";
+    }
+    
+    //@PostMapping("/add")
+    public String addItemV4(Item item){
+        itemRepository.save(item);
+        return "basic/item";
+    }
+```
+
+### 리다이렉트
+- 스프링은 redirect:/... 으로 편리하게 리다이렉트를 지원한다.
+- 컨트롤러에 매핑된 @PathVariable 의 값은 redirect 에도 사용 할 수 있다.
+  - redirect:/basic/items/{itemId} {itemId} 는 @PathVariable Long itemId 의 값을 그대로 사용한다.
+
+### PRG Post/Redirect/Get 
+브라우저의 새로 고침은 마지막에 서버에 전송한 데이터를 다시 전송한다.
+
+#### 상품 저장 후에 뷰 템플릿으로 이동하는 구조
+![](https://velog.velcdn.com/images/gcael/post/69ddfc8a-0f96-4d72-8c04-aea30ac2bb42/image.PNG)
+
+#### 상품 저장 후에 리다이렉트로 이동하는 구조
+![](https://velog.velcdn.com/images/gcael/post/b622f6b0-0c50-48c8-8564-7816cbf8539a/image.PNG)
+
+ 
 _참고 문서 및 링크_
 - 스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술(김영한)
