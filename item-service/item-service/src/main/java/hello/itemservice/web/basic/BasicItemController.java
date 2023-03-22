@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.model.IModelVisitor;
 
 import javax.annotation.PostConstruct;
@@ -61,10 +62,8 @@ public class BasicItemController {
     }
 
     //@PostMapping("/add")
-    public String addItemV2(@ModelAttribute("item") Item item, Model model){
+    public String addItemV2(@ModelAttribute("item") Item item){
         itemRepository.save(item);
-        model.addAttribute("item", item);
-
         return "basic/item";
     }
 
@@ -80,10 +79,18 @@ public class BasicItemController {
         return "basic/item";
     }
 
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addItemV5(Item item){
         itemRepository.save(item);
         return "redirect:/basic/items/" + item.getId();
+    }
+
+    @PostMapping("/add")
+    public String addItemV6(Item item, RedirectAttributes redirectAttributes){
+        Item saveItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", saveItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/items/{itemId}";
     }
 
     @GetMapping("/{itemId}/edit")
