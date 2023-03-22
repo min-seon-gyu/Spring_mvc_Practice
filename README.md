@@ -1,4 +1,4 @@
-# 학습시작기간 2023.03.15
+# 학습시작기간 2023.03.15(완료)
 
 # 목차
 - [스프링 MVC - 웹 페이지 만들기](#스프링-MVC---웹-페이지-만들기)
@@ -71,6 +71,13 @@ th:value="${item.id}"
 - th:action
 - HTML form에서 action 에 값이 없으면 현재 URL에 데이터를 전송한다.
 
+#### th:if 
+- 해당 조건이 참이면 실행
+
+#### ${param.status}
+- 타임리프에서 쿼리 파라미터를 편리하게 조회하는 기능
+- 원래는 컨트롤러에서 모델에 직접 담고 값을 꺼내야 한다. 그런데 쿼리 파라미터는 자주 사용해서 타임리프에서 직접 지원한다.
+
 ### @ModelAttribute
 - @ModelAttribute 는 Item 객체를 생성하고, 요청 파라미터의 값을 프로퍼티 접근법(setXxx)으로 입력해준다.
 - 모델(Model)에 @ModelAttribute 로 지정한 객체를 자동으로 넣어준다.
@@ -118,6 +125,22 @@ th:value="${item.id}"
 #### 상품 저장 후에 리다이렉트로 이동하는 구조
 ![](https://velog.velcdn.com/images/gcael/post/b622f6b0-0c50-48c8-8564-7816cbf8539a/image.PNG)
 
+### RedirectAttributes
+RedirectAttributes 를 사용하면 URL 인코딩도 해주고, pathVarible , 쿼리 파라미터까지 처리해준다.
+
+```java
+    @PostMapping("/add")
+    public String addItemV6(Item item, RedirectAttributes redirectAttributes){
+        Item saveItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", saveItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/items/{itemId}";
+    }
+```
+- redirect:/basic/items/{itemId}
+  - pathVariable 바인딩: {itemId}
+  - 나머지는 쿼리 파라미터로 처리: ?status=true
+ 
  
 _참고 문서 및 링크_
 - 스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술(김영한)
